@@ -6,7 +6,7 @@ curOperator = '';
 //query Selectors
 //texto da tela da calculadora
 
-document.querySelector(".text");
+calcText = document.querySelector(".text");
 
 //funcoes dos botoes
 
@@ -41,21 +41,23 @@ function checkInput(input)
                 break;
             }
         }
-    console.log(inputs[input.length - 1]);
     }
 }
 
 
 function addNum(numb)
 {
-    if(inputs[inputs.length - 1] == Number)
+    if(typeof inputs[inputs.length - 1] == "number")
     {
-        inputs[inputs.length - 1] += numb;
+        let temp = inputs[inputs.length - 1].toString();
+        temp += numb.toString();
+        inputs[inputs.length - 1] = +temp;
     }
     else
     {
         inputs.push(numb)
     }
+    calcText.innerHTML = inputs[inputs.length - 1];
 }
 
 //verificar se ja tem operador nessa parte da conta, se tem substitui, senao adiciona
