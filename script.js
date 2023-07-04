@@ -1,76 +1,76 @@
+//variaveis
+inputs = [];
+curInput = '';
+curOperator = '';
 
+//query Selectors
+//texto da tela da calculadora
 
-//Logic Variables
+document.querySelector(".text");
 
-let numb = [];
-let operators = [];
-let curInput = '';
+//funcoes dos botoes
 
-let index =0;
+//funcoes logicas e de visual
 
-let result = 0;
-
-
-//DOM Variables
-
-const displayText = document.querySelector('.text');
-
-//Input Logic
-
- function input(char)
+ // funcao para verificar qual o input inserido (nao altera diretamente o visual)
+function checkInput(input)
 {
-    switch(char)
+    if(typeof input == "number")
     {
-        case "=":
+        addNum(input)
+    }
+    else
+    {
+        switch(input)
+        {
+            case '.':
             {
-                calculate(inputs);
-                curInput = '';
-                index = 0;
-                break;
-            } 
-        case '0','1','2','3','4','5','6','7','8','9':
-            {
-                curInput += char;
-                displayText.innerHTML = curInput;
-                numb[index] = curInput;
                 break;
             }
-        default:
+            case '+','-','*','/','**','%','rest':
             {
-                numb[index] = curInput;
-                index++;
-                checkOp(char);
-                curInput = '';
+                checkOperator(input);
                 break;
-            } 
-    }
-    //verifica se ja ha operador, se tem substitui, senao add
-    function checkOp(ope)
-    {
-        if(!(operators.length > numb.length))
-        {
-            console.log("helo klittle styles");
-            operators.push(ope);
+            }
+            case 'C':
+            {
+                break;
+            }
+            case 'AC':
+            {
+                break;
+            }
         }
-        else
-        {
-            operators[operators.length] = ope;
-        }
-        displayText.innerHTML = operators[operators.length -1 ];
+    console.log(inputs[input.length - 1]);
     }
-
-    function calculate(calc)
-    {
-        calc.forEach(element => {
-
-        });
-    }
-
-
-    console.log("op:" + operators.length);
-    //console.log("curInput:" + curInput);
-    // console.log("result:" + result);
-    //console.log("index:" + index);
-
 }
-        
+
+
+function addNum(numb)
+{
+    if(inputs[inputs.length - 1] == Number)
+    {
+        inputs[inputs.length - 1] += numb;
+    }
+    else
+    {
+        inputs.push(numb)
+    }
+}
+
+//verificar se ja tem operador nessa parte da conta, se tem substitui, senao adiciona
+
+function checkOperator(operator)
+{
+    if(curInput = '')
+    {
+        inputs.push(operator);
+    }
+    else
+    {
+        inputs[inputs.length - 1] = operator;
+    }
+}
+
+
+ // funcao para verificar
