@@ -2,6 +2,8 @@
 inputs = [];
 curInput = '';
 curOperator = '';
+isDec = undefined;
+decimals = '10';
 
 //query Selectors
 //texto da tela da calculadora
@@ -25,6 +27,7 @@ function checkInput(input)
         {
             case '.':
             {
+                setDecimal();
                 break;
             }
             case '+','-','*','/','**','%','rest':
@@ -44,10 +47,19 @@ function checkInput(input)
     }
 }
 
+//funcao q add numero
 
 function addNum(numb)
 {
-    if(typeof inputs[inputs.length - 1] == "number")
+    //aqui pega o numb como numero, converte ele e o input em string p poder adicionar, depois transforma
+    //ele em numero dnv e add para a lista de inputs
+    if(isDec)
+    {
+        numb = numb/+decimals;
+        decimals += '0';
+        inputs[inputs.length - 1] += numb;
+    }
+    else if(typeof inputs[inputs.length - 1] == "number")
     {
         let temp = inputs[inputs.length - 1].toString();
         temp += numb.toString();
@@ -58,6 +70,7 @@ function addNum(numb)
         inputs.push(numb)
     }
     calcText.innerHTML = inputs[inputs.length - 1];
+    curInput = inputs[inputs.length - 1];
 }
 
 //verificar se ja tem operador nessa parte da conta, se tem substitui, senao adiciona
@@ -72,7 +85,24 @@ function checkOperator(operator)
     {
         inputs[inputs.length - 1] = operator;
     }
+
+    setDecimal();
 }
 
+ // funcao que controla o uso de decimal
 
- // funcao para verificar
+function setDecimal()
+{  
+    if(typeof inputs[inputs.length - 1] == "number")
+    {
+        if(!isDec)
+        {
+            calcText.innerHTML = inputs[inputs.length - 1].toFixed(1);
+            isDec = true;
+        }
+    }
+    else
+    {
+        isDec = false;
+    }
+}
