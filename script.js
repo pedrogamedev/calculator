@@ -86,13 +86,14 @@ function setDecimal()
     {
         if(!isDec)
         {
-            inputs[inputs.length - 1] = inputs[inputs.length - 1].toFixed(1);
-            calcText.innerHTML = inputs[inputs.length - 1].toFixed(1);
+            inputs[inputs.length - 1].toFixed(1);
+            calcText.innerHTML = inputs[inputs.length - 1];
             isDec = true;
         }
     }
     else
     {
+        setDecimals();
         isDec = false;
     }
 }
@@ -101,15 +102,23 @@ function setDecimal()
 
 function setDecimals()
 {
-    let temp = inputs[inputs.length - 1];
-    console.log(temp);
+    let temp = inputs[inputs.length -1 ];
+    let count = 0;
+    if(Number.isInteger(temp) || temp == undefined)
+    {
+        return '10';
+    }
+    else
+    {
+        count = 10;
+    }
     temp = temp.countDecimals();
-    let count = 1;
 
     for(i = 0; i < temp; i++)
     {
-        count *=10;
+        count *= 10;
     }
+    console.log(count);
     return count.toString();
 }
  //conta a quantidade de zeros e retorna o decimal //peguei do stack overflow mt avancado p mim entender agr
@@ -118,10 +127,6 @@ Number.prototype.countDecimals = function () {
     if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
 
     var str = this.toString();
-    if(Number.isInteger(this))
-    {
-        str += '.0';
-    }
     if (str.indexOf(".") !== -1 && str.indexOf("-") !== -1) {
         return str.split("-")[1] || 0;
     } else if (str.indexOf(".") !== -1) {
