@@ -3,7 +3,6 @@ inputs = [];
 curInput = '';
 curOperator = '';
 isDec = undefined;
-decimals = '10';
 
 //query Selectors
 //texto da tela da calculadora
@@ -39,7 +38,7 @@ function checkInput(input)
             }
             case 'C':
             {
-                setDecimal();
+                removeLast();
                 break;
             }
             case 'AC':
@@ -60,8 +59,9 @@ function addNum(numb)
     //ele em numero dnv e add para a lista de inputs
     if(isDec)
     {
+        let decimals ='';
+        decimals = setDecimals();
         numb = numb/+decimals;
-        decimals += '0';
         inputs[inputs.length - 1] += numb;
     }
     else if(typeof inputs[inputs.length - 1] == "number")
@@ -86,17 +86,49 @@ function setDecimal()
     {
         if(!isDec)
         {
+            inputs[inputs.length - 1] = inputs[inputs.length - 1].toFixed(1);
             calcText.innerHTML = inputs[inputs.length - 1].toFixed(1);
             isDec = true;
         }
     }
     else
     {
-        decimals = '10';
         isDec = false;
     }
 }
 
+ //funcao q retorna o valor de decimal
+
+function setDecimals()
+{
+    let temp = inputs[inputs.length - 1];
+    console.log(temp);
+    temp = temp.countDecimals();
+    let count = 1;
+
+    for(i = 0; i < temp; i++)
+    {
+        count *=10;
+    }
+    return count.toString();
+}
+ //conta a quantidade de zeros e retorna o decimal //peguei do stack overflow mt avancado p mim entender agr
+Number.prototype.countDecimals = function () {
+
+    if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
+
+    var str = this.toString();
+    if(Number.isInteger(this))
+    {
+        str += '.0';
+    }
+    if (str.indexOf(".") !== -1 && str.indexOf("-") !== -1) {
+        return str.split("-")[1] || 0;
+    } else if (str.indexOf(".") !== -1) {
+        return str.split(".")[1].length || 0;
+    }
+    return str.split("-")[1] || 0;
+}
  //verificar se ja tem operador nessa parte da conta, se tem substitui, senao adiciona
 
 function checkOperator(operator)
@@ -116,12 +148,31 @@ function checkOperator(operator)
 
 function removeLast()
 {
-    
+    if(typeof inputs[inputs.length - 1] == "number")
+    { 
+        let temp = inputs[inputs.length -1].toString();
+        console.log("helo");
+        if(isDec)
+        {
+            temp = temp.slice(-1);
+        }
+        else
+        {
+          temp = temp.slice(-1);
+        }
+         inputs[inputs.length - 1] = +temp;
+        calcText.innerHTML = inputs[inputs.length - 1];
+    }
+    else
+    {
+        inputs.pop();
+    }
+
 }
  //remove todos os inputs
  
 function clean()
 {
     inputs = [];
-    calcText.innerHTML = '0';
+    calcText.innerHTML = '';
 }
