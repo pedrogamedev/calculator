@@ -14,7 +14,8 @@ calcText = document.querySelector(".text");
 
 //funcoes logicas e de visual
 
- // funcao para verificar qual o input inserido (nao altera diretamente o visual)
+ //funcao para verificar qual o input inserido (nao altera diretamente o visual)
+
 function checkInput(input)
 {
     if(typeof input == "number")
@@ -33,21 +34,25 @@ function checkInput(input)
             case '+','-','*','/','**','%','rest':
             {
                 checkOperator(input);
+                setDecimal();
                 break;
             }
             case 'C':
             {
+                setDecimal();
                 break;
             }
             case 'AC':
             {
+                clean();
+                setDecimal();
                 break;
             }
         }
     }
 }
 
-//funcao q add numero
+ //funcao q add numero
 
 function addNum(numb)
 {
@@ -73,23 +78,7 @@ function addNum(numb)
     curInput = inputs[inputs.length - 1];
 }
 
-//verificar se ja tem operador nessa parte da conta, se tem substitui, senao adiciona
-
-function checkOperator(operator)
-{
-    if(curInput = '')
-    {
-        inputs.push(operator);
-    }
-    else
-    {
-        inputs[inputs.length - 1] = operator;
-    }
-
-    setDecimal();
-}
-
- // funcao que controla o uso de decimal
+ //funcao que controla o uso de decimal
 
 function setDecimal()
 {  
@@ -103,6 +92,36 @@ function setDecimal()
     }
     else
     {
+        decimals = '10';
         isDec = false;
     }
+}
+
+ //verificar se ja tem operador nessa parte da conta, se tem substitui, senao adiciona
+
+function checkOperator(operator)
+{
+    if(curInput = '')
+    {
+        inputs.push(operator);
+    }
+    else
+    {
+        inputs[inputs.length - 1] = operator;
+    }
+    calcText.innerHTML = operator;
+}
+
+ //remove o ultimo input
+
+function removeLast()
+{
+    
+}
+ //remove todos os inputs
+ 
+function clean()
+{
+    inputs = [];
+    calcText.innerHTML = '0';
 }
