@@ -3,6 +3,8 @@ inputs = [];
 curInput = '';
 curOperator = '';
 isDec = undefined;
+let decimals ='';
+let zeroCount = 0;
 
 //query Selectors
 //texto da tela da calculadora
@@ -60,10 +62,10 @@ function addNum(numb)
     //ele em numero dnv e add para a lista de inputs
     if(isDec)
     {
-        let decimals ='';
-        decimals = setDecimals();
+        setDecimals();
         numb = numb/+decimals;
-        inputs[inputs.length - 1] += numb;
+        numb = numb.toFixed(zeroCount);
+        inputs[inputs.length - 1] = (+inputs[inputs.length - 1] + numb).toString();
     }
     else if(typeof inputs[inputs.length - 1] == "number")
     {
@@ -87,7 +89,7 @@ function setDecimal()
     {
         if(!isDec)
         {
-            inputs[inputs.length - 1].toFixed(1);
+            inputs[inputs.length - 1] = +inputs[inputs.length - 1].toFixed(1);
             calcText.innerHTML = inputs[inputs.length - 1];
             isDec = true;
         }
@@ -103,26 +105,25 @@ function setDecimal()
 
 function setDecimals()
 {
-    let temp = inputs[inputs.length -1 ];
-    let count = 0;
-    if(Number.isInteger(temp) || temp == undefined)
+    countZeros();
+    if(zeroCount == undefined || zeroCount == 0)
     {
         decimals = 10;
         return;
     }
-    else
+    decimals = 10;
+    for(i = 0; i < zeroCount; i++)
     {
-        count = 10;
+        decimals *= 10;
     }
-    temp = temp.countDecimals();
-
-    for(i = 0; i < temp; i++)
-    {
-        count *= 10;
-    }
-    console.log(count);
-    decimals = count.toString();
     return;
+}
+function countZeros()
+{
+    let temp = inputs[inputs.length -1 ];
+
+    temp = +temp;
+    zeroCount = temp.countDecimals();
 }
  //conta a quantidade de zeros e retorna o decimal //peguei do stack overflow mt avancado p mim entender agr
 Number.prototype.countDecimals = function () {
@@ -159,8 +160,8 @@ function removeLast()
     if(typeof inputs[inputs.length - 1] == "number")
     {     
         let curInputTemp = inputs[inputs.length -1].toString();
-        console.log(curInputTemp);
-        curInputTemp = curInputTemp.slice(0, -1);
+        console.log(curInputTemp)
+        curInputTemp = curInputTemp.slice(-1);
         curInputTemp = +curInputTemp;
         
         if(isDec)
