@@ -38,6 +38,7 @@ function checkInput(input)
             }
             case 'C':
             {
+                setDecimals();
                 removeLast();
                 break;
             }
@@ -106,7 +107,8 @@ function setDecimals()
     let count = 0;
     if(Number.isInteger(temp) || temp == undefined)
     {
-        return '10';
+        decimals = 10;
+        return;
     }
     else
     {
@@ -119,7 +121,8 @@ function setDecimals()
         count *= 10;
     }
     console.log(count);
-    return count.toString();
+    decimals = count.toString();
+    return;
 }
  //conta a quantidade de zeros e retorna o decimal //peguei do stack overflow mt avancado p mim entender agr
 Number.prototype.countDecimals = function () {
@@ -154,19 +157,28 @@ function checkOperator(operator)
 function removeLast()
 {
     if(typeof inputs[inputs.length - 1] == "number")
-    { 
-        let temp = inputs[inputs.length -1].toString();
-        console.log("helo");
+    {     
+        let curInputTemp = inputs[inputs.length -1].toString();
+        console.log(curInputTemp);
+        curInputTemp = curInputTemp.slice(0, -1);
+        curInputTemp = +curInputTemp;
+        
         if(isDec)
-        {
-            temp = temp.slice(-1);
+        { 
+            setDecimals();
+
+            temp = decimals.length;
+            console.log(temp);
+
+            inputs[inputs.length - 1] = curInputTemp.toFixed(temp -1); 
+            calcText.innerHTML = inputs[inputs.length - 1];
         }
         else
         {
-          temp = temp.slice(-1);
+            inputs[inputs.length - 1] = curInputTemp;
+            calcText.innerHTML = inputs[inputs.length - 1];
+
         }
-         inputs[inputs.length - 1] = +temp;
-        calcText.innerHTML = inputs[inputs.length - 1];
     }
     else
     {
@@ -174,6 +186,8 @@ function removeLast()
     }
 
 }
+
+ 
  //remove todos os inputs
  
 function clean()
