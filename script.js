@@ -29,7 +29,7 @@ function checkInput(input)
         {
             case '.':
             {
-                setDecimal();
+                setDecimal(input);
                 break;
             }
             case '+','-','*','/','**','%','rest':
@@ -64,8 +64,11 @@ function addNum(numb)
     {
         setDecimals();
         numb = numb/+decimals;
-        numb = numb.toFixed(zeroCount);
-        inputs[inputs.length - 1] = (+inputs[inputs.length - 1] + numb).toString();
+        if(zeroCount != 0)
+        {
+            numb = numb.toFixed(zeroCount + 1);
+        }
+        inputs[inputs.length - 1] = (+inputs[inputs.length - 1] + +numb).toString();
     }
     else if(typeof inputs[inputs.length - 1] == "number")
     {
@@ -83,20 +86,19 @@ function addNum(numb)
 
  //funcao que controla o uso de decimal
 
-function setDecimal()
+function setDecimal(input)
 {  
     if(typeof inputs[inputs.length - 1] == "number")
     {
         if(!isDec)
         {
-            inputs[inputs.length - 1] = +inputs[inputs.length - 1].toFixed(1);
+            inputs[inputs.length - 1] = inputs[inputs.length - 1].toFixed(1);
             calcText.innerHTML = inputs[inputs.length - 1];
             isDec = true;
         }
     }
-    else
+    else if (input != '.')
     {
-        setDecimals();
         isDec = false;
     }
 }
@@ -105,7 +107,10 @@ function setDecimal()
 
 function setDecimals()
 {
-    countZeros();
+    let temp = inputs[inputs.length -1 ];
+    temp = +temp;
+    zeroCount = temp.countDecimals();
+
     if(zeroCount == undefined || zeroCount == 0)
     {
         decimals = 10;
@@ -117,13 +122,6 @@ function setDecimals()
         decimals *= 10;
     }
     return;
-}
-function countZeros()
-{
-    let temp = inputs[inputs.length -1 ];
-
-    temp = +temp;
-    zeroCount = temp.countDecimals();
 }
  //conta a quantidade de zeros e retorna o decimal //peguei do stack overflow mt avancado p mim entender agr
 Number.prototype.countDecimals = function () {
